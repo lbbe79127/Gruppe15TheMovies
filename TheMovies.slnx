@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TheMovies.Core/TheMovies.Core.csproj" />
+  <Project Path="TheMovies.UI/TheMovies.UI.csproj" />
+</Solution>
