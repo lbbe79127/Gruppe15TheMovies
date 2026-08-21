@@ -4,7 +4,13 @@ using System.Text;
 
 namespace TheMovies.Core.Models
 {
-    class Movie
+    public class Movie
     {
+        public int MovieID { get; set; }
+        public string Title { get; set; }
+        public int Duration { get; set; }
+        public string Genre { get; set; }
+        public string Instructor { get; set; }
+        public DateTime PremiereDate { get; set; }
     }
 }
