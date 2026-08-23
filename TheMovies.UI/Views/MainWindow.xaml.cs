@@ -20,5 +20,21 @@ namespace TheMovies.UI
         {
             InitializeComponent();
         }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAnnuller_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Go back to Menu.");
+            Environment.Exit(0);
+        }
+
+        private void btnChoose_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
