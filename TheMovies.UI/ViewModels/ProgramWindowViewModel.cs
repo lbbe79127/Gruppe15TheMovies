@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
+using System.Globalization;
 using System.Text;
+using System.Windows;
+using System.Windows.Input;
 using TheMovies.Core.Models;
 using TheMovies.Core.Repositories;
-using System.Windows;
 
 namespace TheMovies.UI.ViewModels
 {
@@ -52,8 +53,9 @@ namespace TheMovies.UI.ViewModels
 
 
         // --------- Contructor --------- 
-        public ProgramWindowViewModel()
+        public ProgramWindowViewModel(IShowingRepository showingRepository)
         {
+            _showingRepository = showingRepository;
             Cinemas = new ObservableCollection<Cinema>();
             RegisterCommand = new RelayCommand(_ => RegisterShowing(), _ => true);
 
@@ -71,7 +73,16 @@ namespace TheMovies.UI.ViewModels
         {
             try
             {
-                MessageBox.Show($"Registreret: {SelectedDate}, {SelectedCinema.Name}, {SelectedScreen}");
+                Showing newShowing = new Showing()
+                {
+                    ShowingID = -1,
+                    MovieID = -1,
+                    ScreenNumber = Int32.Parse(SelectedScreen),
+                    StartTime = DateTime.ParseExact(SelectedDate, "dd/MM/yyyy", new CultureInfo("da-DK")),
+                    EndTime = DateTime.ParseExact(SelectedDate, "dd/MM/yyyy", new CultureInfo("da-DK")).AddHours(2)
+                };
+                _showingRepository.Add(newShowing);
+                MessageBox.Show($"Registreret: {newShowing.ShowingID}, {newShowing.MovieID}, {newShowing.ScreenNumber}, {newShowing.StartTime.ToString()}, {newShowing.EndTime.ToString()}");
             }
             catch (Exception ex) {
                 MessageBox.Show("Registreret!");
