@@ -61,7 +61,7 @@ namespace TheMovies.UI.ViewModels
             Cinemas.Add(new Cinema() {CinemaID = 0, Name = "Østerbro" });
             Cinemas.Add(new Cinema() {CinemaID = 1, Name = "Kolding" });
 
-            SelectedCinema = new Cinema() { CinemaID = -1, Name = "Error" };
+            SelectedCinema = Cinemas[0];
             SelectedDate = "";
             SelectedScreen = "";
         }

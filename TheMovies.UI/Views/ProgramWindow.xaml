@@ -40,7 +40,7 @@
             <ListBox x:Name="listboxCinema" Grid.Column="1" Margin ="0,0,10,10" 
                      Grid.Row="0" d:ItemsSource="{d:SampleData ItemCount=5}" 
                      ItemsSource="{Binding Cinemas}"
-                     SelectionChanged="listboxCinema_SelectionChanged"
+                     SelectedItem="{Binding SelectedCinema}"
                      DisplayMemberPath="Name"/>
 
             <!---  

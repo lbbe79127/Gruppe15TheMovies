@@ -23,10 +23,5 @@ namespace TheMovies.UI.Views
             InitializeComponent();
             DataContext = new ProgramWindowViewModel();
         }
-
-        private void listboxCinema_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }
