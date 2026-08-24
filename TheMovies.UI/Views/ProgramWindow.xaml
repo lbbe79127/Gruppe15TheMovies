@@ -23,7 +23,8 @@
             <Button x:Name="btnRegister" Content="Registrer" Margin ="0,0,0,10" 
                     HorizontalAlignment="Left" VerticalAlignment="Center" 
                     Height="50" Width="100" 
-                    Grid.Column="3" Grid.Row="4"/>
+                    Grid.Column="3" Grid.Row="4"
+                    Command="{Binding RegisterCommand}" />
 
             <Label x:Name="lblChooseCinema" Content="Vælg Biograf" Margin ="0,10,0,0" 
                    HorizontalAlignment="Center"  VerticalAlignment="Center" 
@@ -37,18 +38,32 @@
 
 
             <ListBox x:Name="listboxCinema" Grid.Column="1" Margin ="0,0,10,10" 
-                     Grid.Row="0" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="listboxCinema_SelectionChanged"/>
+                     Grid.Row="0" d:ItemsSource="{d:SampleData ItemCount=5}" 
+                     ItemsSource="{Binding Cinemas}"
+                     SelectionChanged="listboxCinema_SelectionChanged"
+                     DisplayMemberPath="Name"/>
+
+            <!---  
             <ListBox x:Name="listboxScreen" Grid.Column="1" Margin ="0,0,10,10" 
                      Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+            -->
+            <TextBox Text="{Binding SelectedScreen}"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        Grid.Column="1" Grid.Row="1" Width="100"
+                        />
 
             <!-- A DatePicker that has March 23, 2009 selected and 
-           displays the Long date format. -->
-            <DatePicker SelectedDateFormat="Long" SelectedDate="08/24/26"
+           displays the Long date format. 
+            <DatePicker SelectedDateFormat="Long" Text="{Binding SelectedDate}"
                         DisplayDateStart="1/01/26" DisplayDateEnd="12/31/26" 
                         HorizontalAlignment="Left" VerticalAlignment="Center" 
                         Grid.Column="1" Grid.Row="2" 
                         FirstDayOfWeek="Monday"/>
-
+            -->
+            <TextBox Text="{Binding SelectedDate}"
+            HorizontalAlignment="Left" VerticalAlignment="Center" 
+            Grid.Column="1" Grid.Row="2" Width="100"
+            />
 
         </Grid>
     </Grid>

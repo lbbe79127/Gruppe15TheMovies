@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TheMovies.UI.ViewModels;
 
 namespace TheMovies.UI.Views
 {
@@ -20,6 +21,7 @@ namespace TheMovies.UI.Views
         public ProgramWindow()
         {
             InitializeComponent();
+            DataContext = new ProgramWindowViewModel();
         }
 
         private void listboxCinema_SelectionChanged(object sender, SelectionChangedEventArgs e)
