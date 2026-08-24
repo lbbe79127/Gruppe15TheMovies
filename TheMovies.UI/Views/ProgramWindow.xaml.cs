@@ -26,5 +26,11 @@ namespace TheMovies.UI.Views
         {
 
         }
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            DayProgramWindow dayProgramWindow = new DayProgramWindow();
+            dayProgramWindow.ShowDialog();
+        }
     }
 }
