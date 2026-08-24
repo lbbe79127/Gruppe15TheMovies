@@ -32,11 +32,5 @@ namespace TheMovies.UI
             // Environment.Exit(0);
             this.Close();
         }
-
-        private void btnChoose_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
     }
 }
