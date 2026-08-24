@@ -4,7 +4,9 @@ using System.Text;
 
 namespace TheMovies.Core.Models
 {
-    class Cinema
+    public class Cinema
     {
+        public int CinemaID { get; set; }
+        public string Name { get; set; }
     }
 }
