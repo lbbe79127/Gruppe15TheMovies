@@ -7,7 +7,13 @@ namespace TheMovies.Core.Repositories
 {
     public interface IMovieRepository
     {
-        void SaveMovie(Movie movie);
-        List<Movie> LoadMovies();
+        //Henter alle film
+        IEnumerable<Movie> GetAll();
+
+        //Henter en film ud fra ID
+        Movie GetByID(int MovieID);
+
+        //Tilføj ny film
+        void Add(Movie movie);
     }
 }
