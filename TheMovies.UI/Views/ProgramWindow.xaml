@@ -9,7 +9,9 @@
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"/>
                 <ColumnDefinition Width="100*"/>
+                <ColumnDefinition Width="30*"/>
                 <ColumnDefinition Width="100*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -20,21 +22,27 @@
             </Grid.RowDefinitions>
 
 
-            <Button x:Name="btnNext" Content="Next" Margin ="0,0,0,10" 
+            <Button x:Name="btnRegisterShowing" Content="Registrer program" Margin ="0,0,0,10" 
                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                    Height="50" Width="100" 
+                    Height="50" Width="125" 
                     Grid.Column="3" Grid.Row="4"
                     Command="{Binding RegisterCommand}" />
 
             <Label x:Name="lblChooseCinema" Content="Vælg Biograf" Margin ="0,10,0,0" 
                    HorizontalAlignment="Center"  VerticalAlignment="Center" 
                    Grid.Column="0" Grid.Row="0" />
-            <Label x:Name="lblChooseScreen" Content="Valg Sal" 
+            <Label x:Name="lblChooseScreen" Content="Vælg Sal (kun int)" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" 
                    Grid.Column="0" Grid.Row="1" />
-            <Label x:Name="lblChooseDate" Content="Vælg Dato" 
+            <Label x:Name="lblChooseDate" Content="Vælg Dato(dd/MM/yyyy)" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" 
                    Grid.Column="0" Grid.Row="2"/>
+            <Label x:Name="lblChooseMovie" Content="Vælg Film" Margin ="0,10,0,0" 
+          HorizontalAlignment="Center"  VerticalAlignment="Center" 
+          Grid.Column="2" Grid.Row="0" />
+            <Label x:Name="lblChooseStartTime" Content="Vælg StartTid(HH:mm)" Margin ="0,10,0,0" 
+          HorizontalAlignment="Center"  VerticalAlignment="Center" 
+          Grid.Column="2" Grid.Row="1" />
 
 
             <ListBox x:Name="listboxCinema" Grid.Column="1" Margin ="0,0,10,10" 
@@ -43,18 +51,29 @@
                      SelectedItem="{Binding SelectedCinema}"
                      DisplayMemberPath="Name"/>
 
+            <ListBox x:Name="listboxMovies" Margin ="0,0,10,10" 
+                    Grid.Row="0" Grid.Column="3" d:ItemsSource="{d:SampleData ItemCount=5}" 
+                    ItemsSource="{Binding Movies}"
+                    SelectedItem="{Binding SelectedMovie}"
+                    DisplayMemberPath="Title"/>
+
+            <TextBox Text="{Binding SelectedScreen}"
+             HorizontalAlignment="Left" VerticalAlignment="Center" 
+             Grid.Column="1" Grid.Row="1" Width="100"
+             />
+
             <!---  
             <ListBox x:Name="listboxScreen" Grid.Column="1" Margin ="0,0,10,10" 
                      Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}"/>
             -->
-            <TextBox Text="{Binding SelectedScreen}"
+            <TextBox Text="{Binding SelectedStartTime}"
                         HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1" Grid.Row="1" Width="100"
+                        Grid.Column="3" Grid.Row="1" Width="100"
                         />
 
             <!-- A DatePicker that has March 23, 2009 selected and 
            displays the Long date format. 
-            <DatePicker SelectedDateFormat="Long" Text="{Binding SelectedDate}"
+            <DatePicker  SelectedDateFormat="Long" Text="{Binding SelectedDate}"
                         DisplayDateStart="1/01/26" DisplayDateEnd="12/31/26" 
                         HorizontalAlignment="Left" VerticalAlignment="Center" 
                         Grid.Column="1" Grid.Row="2" 
@@ -64,7 +83,6 @@
             HorizontalAlignment="Left" VerticalAlignment="Center" 
             Grid.Column="1" Grid.Row="2" Width="100"
             />
-
         </Grid>
     </Grid>
 </Window>
