@@ -21,6 +21,14 @@ namespace TheMovies.Core.Models
 
         }
 
+        public Showing(int showingID, int movieID, int screenNumber, DateTime startTime, DateTime endTime)
+        {
+            ShowingID = showingID;
+            MovieID = movieID;
+            ScreenNumber = screenNumber;
+            StartTime = startTime;
+            EndTime = endTime;
+        }
 
         public string ToFileString()
         {
