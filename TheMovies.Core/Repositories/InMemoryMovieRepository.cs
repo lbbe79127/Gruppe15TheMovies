@@ -5,9 +5,15 @@ using TheMovies.Core.Models;
 
 namespace TheMovies.Core.Repositories
 {
-    class InMemoryMovieRepository : IMovieRepository
+    public class InMemoryMovieRepository : IMovieRepository
     {
-        List<Movie> movieList = new List<Movie>();
+        // Test movies
+        List<Movie> movieList = new List<Movie>()
+        {
+            new Movie() { MovieID = 0, Title = "De uskyldige", Duration = 117, Instructor = "Eskil Vogt", Genre = "Thriller", PremiereDate = DateTime.Now },
+            new Movie() { MovieID = 1, Title = "Druk", Duration = 117, Instructor = "Thomas Vinterberg", Genre = "Comedy", PremiereDate = DateTime.Now }
+
+        };
 
         public void Add(Movie movie)
         {

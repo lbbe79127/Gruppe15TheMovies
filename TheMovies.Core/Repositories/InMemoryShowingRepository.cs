@@ -5,7 +5,7 @@ using TheMovies.Core.Models;
 
 namespace TheMovies.Core.Repositories
 {
-    class InMemoryShowingRepository : IShowingRepository
+    public class InMemoryShowingRepository : IShowingRepository
     {
         List<Showing> showingList = new List<Showing>();
 
