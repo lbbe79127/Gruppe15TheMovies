@@ -11,7 +11,7 @@ namespace TheMovies.Core.Repositories
         IEnumerable<Movie> GetAll();
 
         //Henter en film ud fra ID
-        Movie GetByID(int MovieID);
+        Movie GetByID(int movieID); // rettet fra MovieID til movieID
 
         //Tilføj ny film
         void Add(Movie movie);
