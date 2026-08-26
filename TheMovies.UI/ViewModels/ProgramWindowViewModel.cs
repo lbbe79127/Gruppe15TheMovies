@@ -89,17 +89,27 @@ namespace TheMovies.UI.ViewModels
             Movies = new ObservableCollection<Movie>(movieRepository.GetAll());
             _screens = new List<Screen>(screenRepository.GetAll());
 
-            RegisterCommand = new RelayCommand(_ => RegisterShowing(), _ => true);
+            RegisterCommand = new RelayCommand(_ => RegisterShowing(), _ => CanRegisterShowing());
 
-            SelectedCinema = Cinemas[0];
-            SelectedMovie = Movies[0];
+            SelectedCinema = null;
+            SelectedMovie = null;
             SelectedDate = "";
             SelectedScreen = "";
+            SelectedStartTime = "";
         }
 
         // --------- Methods for relaycommands --------- 
-        public void RegisterShowing()
+        public bool CanRegisterShowing() // Checks if datainput is filled
         {
+            if (SelectedMovie != null && SelectedCinema != null && SelectedDate != "" && SelectedScreen != "" && SelectedStartTime != "")
+            {
+                return true;
+            }
+            return false;
+        }
+        public void RegisterShowing() // Checks and informs user if datainput is correct then informs user if data has been saved
+        {
+
             try
             {
                 string startime = SelectedDate + " " + SelectedStartTime;
