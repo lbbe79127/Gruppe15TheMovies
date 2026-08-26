@@ -16,7 +16,8 @@ namespace TheMovies.UI.ViewModels
         private readonly IScreenRepository _screenRepository;
         private readonly IShowingRepository _showingRepository;
         private readonly IMovieRepository _movieRepository;
-        //private readonly ICinemaRepository _cinemaRepository;
+        private readonly ICinemaRepository _cinemaRepository;
+        
 
         // --------- Observable Collections --------- 
         private ObservableCollection<Cinema> _cinemas;
@@ -74,30 +75,39 @@ namespace TheMovies.UI.ViewModels
 
 
         // --------- Contructor --------- 
-        public ProgramWindowViewModel(IShowingRepository showingRepository, IMovieRepository movieRepository)
+        public ProgramWindowViewModel(IShowingRepository showingRepository, IMovieRepository movieRepository, ICinemaRepository cinemaRepository)
         {
             _showingRepository = showingRepository;
             _movieRepository = movieRepository;
+            _cinemaRepository = cinemaRepository;
+
             Cinemas = new ObservableCollection<Cinema>();
             Movies = new ObservableCollection<Movie>();
+
             RegisterCommand = new RelayCommand(_ => RegisterShowing(), _ => true);
 
-            // Test Cinemas
-            Cinemas.Add(new Cinema() { CinemaID = 0, Name = "Hjerm" });
-            Cinemas.Add(new Cinema() { CinemaID = 1, Name = "Videbæk" });
-            Cinemas.Add(new Cinema() { CinemaID = 2, Name = "Thorsminde" });
-            Cinemas.Add(new Cinema() { CinemaID = 3, Name = "Ræhr" });
-            Cinemas.Add(new Cinema() { CinemaID = 4, Name = "Østerbro" });
-            Cinemas.Add(new Cinema() { CinemaID = 5, Name = "Kolding" });
+            foreach (Cinema cinema in _cinemaRepository.GetAll())
+            {
+                Cinemas.Add(cinema);
+            }
+            if (Cinemas.Count>0)
+            {
+                SelectedCinema = Cinemas[0];
+            }
 
-            // Test movies
-            Movies.Add(new Movie() { MovieID = 0, Title = "De uskyldige", Duration = 117, Instructor = "Eskil Vogt", Genre = "Thriller", PremiereDate = DateTime.Now });
-            Movies.Add(new Movie() { MovieID = 1, Title = "Druk", Duration = 117, Instructor = "Thomas Vinterberg", Genre = "Comedy", PremiereDate = DateTime.Now });
-
-            SelectedCinema = Cinemas[0];
             SelectedMovie = Movies[0];
             SelectedDate = "";
             SelectedScreen = "";
+
+            // Test Cinemas
+            _cinemaRepository.Add(new Cinema("Hjerm"));
+            _cinemaRepository.Add(new Cinema("Hjerm"));
+
+            /// Test movies
+            //Movies.Add(new Movie() { MovieID = 0, Title = "De uskyldige", Duration = 117, Instructor = "Eskil Vogt", Genre = "Thriller", PremiereDate = DateTime.Now });
+            //Movies.Add(new Movie() { MovieID = 1, Title = "Druk", Duration = 117, Instructor = "Thomas Vinterberg", Genre = "Comedy", PremiereDate = DateTime.Now });
+            
+            
         }
 
         // --------- Methods for relaycommands --------- 

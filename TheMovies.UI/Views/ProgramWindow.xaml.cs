@@ -24,7 +24,8 @@ namespace TheMovies.UI.Views
             InitializeComponent();
             IShowingRepository showingRepository = new FileShowingRepository();
             IMovieRepository movieRepository = new FileMovieRepository();
-            DataContext = new ProgramWindowViewModel(showingRepository, movieRepository);
+            ICinemaRepository cinemaRepository = new FileCinemaRepository();
+            DataContext = new ProgramWindowViewModel(showingRepository, movieRepository, cinemaRepository);
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
