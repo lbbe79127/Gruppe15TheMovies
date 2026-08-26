@@ -86,7 +86,7 @@ namespace TheMovies.UI.ViewModels
 
             RegisterCommand = new RelayCommand(_ => RegisterShowing(), _ => true);
 
-
+            /*
             // Test Cinemas
             _cinemaRepository.Add(new Cinema("Hjerm"));
             _cinemaRepository.Add(new Cinema("Videbæk"));
@@ -105,7 +105,7 @@ namespace TheMovies.UI.ViewModels
                 "Comedy",
                 "Thomas Vinterberg",
                 DateTime.Now));
-
+            */ 
 
             foreach (Cinema cinema in _cinemaRepository.GetAll())
             {
