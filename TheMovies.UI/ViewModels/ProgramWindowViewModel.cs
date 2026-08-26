@@ -86,28 +86,48 @@ namespace TheMovies.UI.ViewModels
 
             RegisterCommand = new RelayCommand(_ => RegisterShowing(), _ => true);
 
+
+            // Test Cinemas
+            _cinemaRepository.Add(new Cinema("Hjerm"));
+            _cinemaRepository.Add(new Cinema("Videbæk"));
+
+            /// Test movies
+            _movieRepository.Add(new Movie(
+                "De uskyldige",
+                117,
+                "Thriller",
+                "Eskil Vogt",
+                DateTime.Now));
+
+            _movieRepository.Add(new Movie(
+                "Druk",
+                117,
+                "Comedy",
+                "Thomas Vinterberg",
+                DateTime.Now));
+
+
             foreach (Cinema cinema in _cinemaRepository.GetAll())
             {
                 Cinemas.Add(cinema);
             }
-            if (Cinemas.Count>0)
+            if (Cinemas.Count > 0)
             {
                 SelectedCinema = Cinemas[0];
             }
 
-            SelectedMovie = Movies[0];
+
+            foreach (Movie movie in _movieRepository.GetAll())
+            {
+                Movies.Add(movie);
+            }
+            if (Movies.Count>0)
+            {
+                SelectedMovie = Movies[0];
+            }
+            
             SelectedDate = "";
             SelectedScreen = "";
-
-            // Test Cinemas
-            _cinemaRepository.Add(new Cinema("Hjerm"));
-            _cinemaRepository.Add(new Cinema("Hjerm"));
-
-            /// Test movies
-            //Movies.Add(new Movie() { MovieID = 0, Title = "De uskyldige", Duration = 117, Instructor = "Eskil Vogt", Genre = "Thriller", PremiereDate = DateTime.Now });
-            //Movies.Add(new Movie() { MovieID = 1, Title = "Druk", Duration = 117, Instructor = "Thomas Vinterberg", Genre = "Comedy", PremiereDate = DateTime.Now });
-            
-            
         }
 
         // --------- Methods for relaycommands --------- 

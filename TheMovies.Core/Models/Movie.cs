@@ -29,6 +29,14 @@ namespace TheMovies.Core.Models
             Instructor = instructor;
             PremiereDate = premiereDate;
         }
+        public Movie( string title, int duration, string genre, string instructor, DateTime premiereDate)
+        {
+            Title = title;
+            Duration = duration;
+            Genre = genre;
+            Instructor = instructor;
+            PremiereDate = premiereDate;
+        }
 
         //Konvertere Movie-objekt til en streng, som kan gemmes i tekstfil
         public string ToFileString()
