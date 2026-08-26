@@ -26,12 +26,26 @@ namespace TheMovies.UI.ViewModels
                 set { _cinemas = value; }
         }
 
+        private ObservableCollection<Movie> _movies;
+        public ObservableCollection<Movie> Movies
+        {
+            get { return _movies; }
+            set { _movies = value; }
+        }
+
         // --------- Properties w PropertyChanged --------- 
         private Cinema _selectedCinema;
         public Cinema SelectedCinema
         {
             get { return _selectedCinema; }
             set { _selectedCinema = value; OnPropertyChanged(); }
+        }
+
+        private Movie _selectedMovie;
+        public Movie SelectedMovie
+        {
+            get { return _selectedMovie; }
+            set { _selectedMovie = value; OnPropertyChanged(); }
         }
 
         private string _selectedDate;
@@ -47,23 +61,41 @@ namespace TheMovies.UI.ViewModels
             get { return _selectedScreen; }
             set { _selectedScreen = value; OnPropertyChanged(); }
         }
+        //selectedStartTime
+        private string _selectedStartTime;
+        public string SelectedStartTime
+        {
+            get { return _selectedStartTime; }
+            set { _selectedStartTime = value; OnPropertyChanged(); }
+        }
 
         // --------- RelayCommands --------- 
         public ICommand RegisterCommand { get; private set; }
 
 
         // --------- Contructor --------- 
-        public ProgramWindowViewModel(IShowingRepository showingRepository)
+        public ProgramWindowViewModel(IShowingRepository showingRepository, IMovieRepository movieRepository)
         {
             _showingRepository = showingRepository;
+            _movieRepository = movieRepository;
             Cinemas = new ObservableCollection<Cinema>();
+            Movies = new ObservableCollection<Movie>();
             RegisterCommand = new RelayCommand(_ => RegisterShowing(), _ => true);
 
             // Test Cinemas
-            Cinemas.Add(new Cinema() {CinemaID = 0, Name = "Østerbro" });
-            Cinemas.Add(new Cinema() {CinemaID = 1, Name = "Kolding" });
+            Cinemas.Add(new Cinema() { CinemaID = 0, Name = "Hjerm" });
+            Cinemas.Add(new Cinema() { CinemaID = 1, Name = "Videbæk" });
+            Cinemas.Add(new Cinema() { CinemaID = 2, Name = "Thorsminde" });
+            Cinemas.Add(new Cinema() { CinemaID = 3, Name = "Ræhr" });
+            Cinemas.Add(new Cinema() { CinemaID = 4, Name = "Østerbro" });
+            Cinemas.Add(new Cinema() { CinemaID = 5, Name = "Kolding" });
+
+            // Test movies
+            Movies.Add(new Movie() { MovieID = 0, Title = "De uskyldige", Duration = 117, Instructor = "Eskil Vogt", Genre = "Thriller", PremiereDate = DateTime.Now });
+            Movies.Add(new Movie() { MovieID = 1, Title = "Druk", Duration = 117, Instructor = "Thomas Vinterberg", Genre = "Comedy", PremiereDate = DateTime.Now });
 
             SelectedCinema = Cinemas[0];
+            SelectedMovie = Movies[0];
             SelectedDate = "";
             SelectedScreen = "";
         }
@@ -73,13 +105,17 @@ namespace TheMovies.UI.ViewModels
         {
             try
             {
+                string startime = SelectedDate + " " + SelectedStartTime;
+                Movie selectedMovie = _movieRepository.GetByID(SelectedMovie.MovieID);
                 Showing newShowing = new Showing()
                 {
                     ShowingID = -1,
-                    MovieID = -1,
+                    MovieID = SelectedMovie.MovieID,
                     ScreenNumber = Int32.Parse(SelectedScreen),
-                    StartTime = DateTime.ParseExact(SelectedDate, "dd/MM/yyyy", new CultureInfo("da-DK")),
-                    EndTime = DateTime.ParseExact(SelectedDate, "dd/MM/yyyy", new CultureInfo("da-DK")).AddHours(2)
+                    StartTime = DateTime.ParseExact(startime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK")),
+                    EndTime = DateTime.ParseExact(startime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"))
+                    .AddMinutes(SelectedMovie.Duration)
+                    .AddMinutes(30)
                 };
                 _showingRepository.Add(newShowing);
                 MessageBox.Show($"Registreret: {newShowing.ShowingID}, {newShowing.MovieID}, {newShowing.ScreenNumber}, {newShowing.StartTime.ToString()}, {newShowing.EndTime.ToString()}");
