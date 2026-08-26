@@ -16,7 +16,11 @@ namespace TheMovies.UI.ViewModels
         private readonly IScreenRepository _screenRepository;
         private readonly IShowingRepository _showingRepository;
         private readonly IMovieRepository _movieRepository;
-        //private readonly ICinemaRepository _cinemaRepository;
+        private readonly ICinemaRepository _cinemaRepository;
+
+        // --------- Collections ---------
+
+        private readonly List<Screen> _screens;
 
         // --------- Observable Collections --------- 
         private ObservableCollection<Cinema> _cinemas;
@@ -74,25 +78,18 @@ namespace TheMovies.UI.ViewModels
 
 
         // --------- Contructor --------- 
-        public ProgramWindowViewModel(IShowingRepository showingRepository, IMovieRepository movieRepository)
+        public ProgramWindowViewModel(IShowingRepository showingRepository, IMovieRepository movieRepository, IScreenRepository screenRepository, ICinemaRepository cinemaRepository)
         {
             _showingRepository = showingRepository;
             _movieRepository = movieRepository;
-            Cinemas = new ObservableCollection<Cinema>();
-            Movies = new ObservableCollection<Movie>();
+            _screenRepository = screenRepository;
+            _cinemaRepository = cinemaRepository;
+
+            Cinemas = new ObservableCollection<Cinema>(cinemaRepository.GetAll());
+            Movies = new ObservableCollection<Movie>(movieRepository.GetAll());
+            _screens = new List<Screen>(screenRepository.GetAll());
+
             RegisterCommand = new RelayCommand(_ => RegisterShowing(), _ => true);
-
-            // Test Cinemas
-            Cinemas.Add(new Cinema() { CinemaID = 0, Name = "Hjerm" });
-            Cinemas.Add(new Cinema() { CinemaID = 1, Name = "Videbæk" });
-            Cinemas.Add(new Cinema() { CinemaID = 2, Name = "Thorsminde" });
-            Cinemas.Add(new Cinema() { CinemaID = 3, Name = "Ræhr" });
-            Cinemas.Add(new Cinema() { CinemaID = 4, Name = "Østerbro" });
-            Cinemas.Add(new Cinema() { CinemaID = 5, Name = "Kolding" });
-
-            // Test movies
-            Movies.Add(new Movie() { MovieID = 0, Title = "De uskyldige", Duration = 117, Instructor = "Eskil Vogt", Genre = "Thriller", PremiereDate = DateTime.Now });
-            Movies.Add(new Movie() { MovieID = 1, Title = "Druk", Duration = 117, Instructor = "Thomas Vinterberg", Genre = "Comedy", PremiereDate = DateTime.Now });
 
             SelectedCinema = Cinemas[0];
             SelectedMovie = Movies[0];
