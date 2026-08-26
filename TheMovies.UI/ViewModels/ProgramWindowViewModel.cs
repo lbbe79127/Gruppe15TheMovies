@@ -109,27 +109,34 @@ namespace TheMovies.UI.ViewModels
         }
         public void RegisterShowing() // Checks and informs user if datainput is correct then informs user if data has been saved
         {
-
+            Showing newShowing = new Showing(0,0,0,DateTime.Now,DateTime.Now);
             try
             {
-                string startime = SelectedDate + " " + SelectedStartTime;
-                Movie selectedMovie = _movieRepository.GetByID(SelectedMovie.MovieID);
-                Showing newShowing = new Showing()
-                {
-                    ShowingID = -1,
-                    MovieID = SelectedMovie.MovieID,
-                    ScreenNumber = Int32.Parse(SelectedScreen),
-                    StartTime = DateTime.ParseExact(startime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK")),
-                    EndTime = DateTime.ParseExact(startime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"))
-                    .AddMinutes(SelectedMovie.Duration)
-                    .AddMinutes(30)
-                };
+                newShowing = new Showing(
+                    0, // ID needs fixing, not static --- TO CHANGE ---
+                    SelectedMovie.MovieID,
+                    Int32.Parse(SelectedScreen),
+                    DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK")),
+                    DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"))
+                    .AddMinutes(SelectedMovie.Duration + 30)
+                    );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Data Error");
+            }
+            
+            try
+            {
                 _showingRepository.Add(newShowing);
-                MessageBox.Show($"Registreret: {newShowing.ShowingID}, {newShowing.MovieID}, {newShowing.ScreenNumber}, {newShowing.StartTime.ToString()}, {newShowing.EndTime.ToString()}");
+                // Messagebox for debugging --- TO DELETE ---
+                MessageBox.Show($"Registreret:\nID:{newShowing.ShowingID},\nMovieID:{newShowing.MovieID},\nSal:{newShowing.ScreenNumber},\nStarttid:{newShowing.StartTime.ToString()},\nSluttid:{newShowing.EndTime.ToString()}");
             }
-            catch (Exception ex) {
-                MessageBox.Show("Registreret!");
+            catch (Exception ex)
+            {
+                MessageBox.Show("Repository Error");
             }
+            
         }
     }
 }
