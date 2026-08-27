@@ -22,10 +22,10 @@ namespace TheMovies.UI.Views
         public ProgramWindow()
         {
             InitializeComponent();
-            IShowingRepository showingRepository = new InMemoryShowingRepository();
-            IMovieRepository movieRepository = new InMemoryMovieRepository();
-            IScreenRepository screenRepository = new InMemoryScreenRepository();
-            ICinemaRepository cinemaRepository = new InMemoryCinemaRepository();
+            IShowingRepository showingRepository = new FileShowingRepository();
+            IMovieRepository movieRepository = new FileMovieRepository();
+            IScreenRepository screenRepository = new FileScreenRepository();
+            ICinemaRepository cinemaRepository = new FileCinemaRepository();
 
             DataContext = new ProgramWindowViewModel(showingRepository, movieRepository, screenRepository, cinemaRepository);
         }

@@ -113,9 +113,8 @@ namespace TheMovies.UI.ViewModels
             try
             {
                 newShowing = new Showing(
-                    0, // ID needs fixing, not static --- TO CHANGE ---
                     SelectedMovie.MovieID,
-                    Int32.Parse(SelectedScreen),
+                    Int32.Parse(SelectedScreen), //Mangler exception handling - tjek at skærm er i den valgte biograf
                     DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK")),
                     DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"))
                     .AddMinutes(SelectedMovie.Duration + 30)
@@ -129,8 +128,7 @@ namespace TheMovies.UI.ViewModels
             try
             {
                 _showingRepository.Add(newShowing);
-                // Messagebox for debugging --- TO DELETE ---
-                MessageBox.Show($"Registreret:\nID:{newShowing.ShowingID},\nMovieID:{newShowing.MovieID},\nSal:{newShowing.ScreenNumber},\nStarttid:{newShowing.StartTime.ToString()},\nSluttid:{newShowing.EndTime.ToString()}");
+                MessageBox.Show($"Registreret:\nFilm: {_movieRepository.GetByID(newShowing.MovieID).Title}\nSal: {newShowing.ScreenNumber}\nStarttid: {newShowing.StartTime.ToString()}\nSluttid: {newShowing.EndTime.ToString()}");
             }
             catch (Exception ex)
             {
