@@ -23,6 +23,12 @@ namespace TheMovies.Core.Models
             Capacity = capacity;
             CinemaID = cinemaID;
         }
+        public Screen(int number, int capacity, int cinemaID)
+        {
+            Number = number;
+            Capacity = capacity;
+            CinemaID = cinemaID;
+        }
 
         public string ToFileString()
         {

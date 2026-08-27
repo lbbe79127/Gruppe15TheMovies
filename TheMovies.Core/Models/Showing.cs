@@ -30,6 +30,14 @@ namespace TheMovies.Core.Models
             EndTime = endTime;
         }
 
+        public Showing(int movieID, int screenNumber, DateTime startTime, DateTime endTime)
+        {
+            MovieID = movieID;
+            ScreenNumber = screenNumber;
+            StartTime = startTime;
+            EndTime = endTime;
+        }
+
         public string ToFileString()
         {
             return $"{ShowingID};{MovieID};{ScreenNumber};{StartTime};{EndTime}";
