@@ -22,9 +22,12 @@ namespace TheMovies.UI.Views
         public ProgramWindow()
         {
             InitializeComponent();
-            IShowingRepository showingRepository = new FileShowingRepository();
-            IMovieRepository movieRepository = new FileMovieRepository();
-            DataContext = new ProgramWindowViewModel(showingRepository, movieRepository);
+            IShowingRepository showingRepository = new InMemoryShowingRepository();
+            IMovieRepository movieRepository = new InMemoryMovieRepository();
+            IScreenRepository screenRepository = new InMemoryScreenRepository();
+            ICinemaRepository cinemaRepository = new InMemoryCinemaRepository();
+
+            DataContext = new ProgramWindowViewModel(showingRepository, movieRepository, screenRepository, cinemaRepository);
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)

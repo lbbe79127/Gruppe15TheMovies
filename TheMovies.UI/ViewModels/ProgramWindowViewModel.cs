@@ -16,7 +16,11 @@ namespace TheMovies.UI.ViewModels
         private readonly IScreenRepository _screenRepository;
         private readonly IShowingRepository _showingRepository;
         private readonly IMovieRepository _movieRepository;
-        //private readonly ICinemaRepository _cinemaRepository;
+        private readonly ICinemaRepository _cinemaRepository;
+
+        // --------- Collections ---------
+
+        private readonly List<Screen> _screens;
 
         // --------- Observable Collections --------- 
         private ObservableCollection<Cinema> _cinemas;
@@ -74,55 +78,65 @@ namespace TheMovies.UI.ViewModels
 
 
         // --------- Contructor --------- 
-        public ProgramWindowViewModel(IShowingRepository showingRepository, IMovieRepository movieRepository)
+        public ProgramWindowViewModel(IShowingRepository showingRepository, IMovieRepository movieRepository, IScreenRepository screenRepository, ICinemaRepository cinemaRepository)
         {
             _showingRepository = showingRepository;
             _movieRepository = movieRepository;
-            Cinemas = new ObservableCollection<Cinema>();
-            Movies = new ObservableCollection<Movie>();
-            RegisterCommand = new RelayCommand(_ => RegisterShowing(), _ => true);
+            _screenRepository = screenRepository;
+            _cinemaRepository = cinemaRepository;
 
-            // Test Cinemas
-            Cinemas.Add(new Cinema() { CinemaID = 0, Name = "Hjerm" });
-            Cinemas.Add(new Cinema() { CinemaID = 1, Name = "Videbæk" });
-            Cinemas.Add(new Cinema() { CinemaID = 2, Name = "Thorsminde" });
-            Cinemas.Add(new Cinema() { CinemaID = 3, Name = "Ræhr" });
-            Cinemas.Add(new Cinema() { CinemaID = 4, Name = "Østerbro" });
-            Cinemas.Add(new Cinema() { CinemaID = 5, Name = "Kolding" });
+            Cinemas = new ObservableCollection<Cinema>(cinemaRepository.GetAll());
+            Movies = new ObservableCollection<Movie>(movieRepository.GetAll());
+            _screens = new List<Screen>(screenRepository.GetAll());
 
-            // Test movies
-            Movies.Add(new Movie() { MovieID = 0, Title = "De uskyldige", Duration = 117, Instructor = "Eskil Vogt", Genre = "Thriller", PremiereDate = DateTime.Now });
-            Movies.Add(new Movie() { MovieID = 1, Title = "Druk", Duration = 117, Instructor = "Thomas Vinterberg", Genre = "Comedy", PremiereDate = DateTime.Now });
+            RegisterCommand = new RelayCommand(_ => RegisterShowing(), _ => CanRegisterShowing());
 
-            SelectedCinema = Cinemas[0];
-            SelectedMovie = Movies[0];
+            SelectedCinema = null;
+            SelectedMovie = null;
             SelectedDate = "";
             SelectedScreen = "";
+            SelectedStartTime = "";
         }
 
         // --------- Methods for relaycommands --------- 
-        public void RegisterShowing()
+        public bool CanRegisterShowing() // Checks if datainput is filled
         {
+            if (SelectedMovie != null && SelectedCinema != null && SelectedDate != "" && SelectedScreen != "" && SelectedStartTime != "")
+            {
+                return true;
+            }
+            return false;
+        }
+        public void RegisterShowing() // Checks and informs user if datainput is correct then informs user if data has been saved
+        {
+            Showing newShowing = new Showing(0,0,0,DateTime.Now,DateTime.Now);
             try
             {
-                string startime = SelectedDate + " " + SelectedStartTime;
-                Movie selectedMovie = _movieRepository.GetByID(SelectedMovie.MovieID);
-                Showing newShowing = new Showing()
-                {
-                    ShowingID = -1,
-                    MovieID = SelectedMovie.MovieID,
-                    ScreenNumber = Int32.Parse(SelectedScreen),
-                    StartTime = DateTime.ParseExact(startime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK")),
-                    EndTime = DateTime.ParseExact(startime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"))
-                    .AddMinutes(SelectedMovie.Duration)
-                    .AddMinutes(30)
-                };
+                newShowing = new Showing(
+                    0, // ID needs fixing, not static --- TO CHANGE ---
+                    SelectedMovie.MovieID,
+                    Int32.Parse(SelectedScreen),
+                    DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK")),
+                    DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"))
+                    .AddMinutes(SelectedMovie.Duration + 30)
+                    );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Data Error");
+            }
+            
+            try
+            {
                 _showingRepository.Add(newShowing);
-                MessageBox.Show($"Registreret: {newShowing.ShowingID}, {newShowing.MovieID}, {newShowing.ScreenNumber}, {newShowing.StartTime.ToString()}, {newShowing.EndTime.ToString()}");
+                // Messagebox for debugging --- TO DELETE ---
+                MessageBox.Show($"Registreret:\nID:{newShowing.ShowingID},\nMovieID:{newShowing.MovieID},\nSal:{newShowing.ScreenNumber},\nStarttid:{newShowing.StartTime.ToString()},\nSluttid:{newShowing.EndTime.ToString()}");
             }
-            catch (Exception ex) {
-                MessageBox.Show("Registreret!");
+            catch (Exception ex)
+            {
+                MessageBox.Show("Repository Error");
             }
+            
         }
     }
 }
