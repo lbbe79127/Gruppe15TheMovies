@@ -110,31 +110,58 @@ namespace TheMovies.UI.ViewModels
         public void RegisterShowing() // Checks and informs user if datainput is correct then informs user if data has been saved
         {
             Showing newShowing = new Showing(0,0,0,DateTime.Now,DateTime.Now);
+            if(ValidateSelectedScreen())
+            {
+
+            }
             try
+                {
+                    newShowing = new Showing(
+                        SelectedMovie.MovieID,
+                        Int32.Parse(SelectedScreen), //Mangler exception handling - tjek at skærm er i den valgte biograf
+                                                     //Date is future or same of Datetime.Now
+                                                     //1<=screen number <=100
+                                                     //If HH:mm format is wrongly typed, show message "Time should be HH:mm format"
+
+                        DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK")),
+                        DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"))
+                        .AddMinutes(SelectedMovie.Duration + 30)
+                        );
+
+                    try
+                    {
+                        _showingRepository.Add(newShowing);
+                        MessageBox.Show($"Registreret:\nFilm: {_movieRepository.GetByID(newShowing.MovieID).Title}\nSal: {newShowing.ScreenNumber}\nStarttid: {newShowing.StartTime.ToString()}\nSluttid: {newShowing.EndTime.ToString()}");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Repository Error");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Data Error");
+                }
+        }
+
+        private bool ValidateSelectedScreen()
+        {
+            if (Int32.TryParse(SelectedScreen, out int selectedScreen))
             {
-                newShowing = new Showing(
-                    SelectedMovie.MovieID,
-                    Int32.Parse(SelectedScreen), //Mangler exception handling - tjek at skærm er i den valgte biograf
-                    DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK")),
-                    DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"))
-                    .AddMinutes(SelectedMovie.Duration + 30)
-                    );
+                if(!_screens.Any((x => x.CinemaID == SelectedCinema.CinemaID && x.Number == selectedScreen)))
+                {
+                    MessageBox.Show("Selected screen is not valid");
+                    return false;
+                }
             }
-            catch (Exception ex)
+            else // selected screen not a number
             {
-                MessageBox.Show("Data Error");
+                MessageBox.Show("Selected screen should be a number");
+                return false;
             }
-            
-            try
-            {
-                _showingRepository.Add(newShowing);
-                MessageBox.Show($"Registreret:\nFilm: {_movieRepository.GetByID(newShowing.MovieID).Title}\nSal: {newShowing.ScreenNumber}\nStarttid: {newShowing.StartTime.ToString()}\nSluttid: {newShowing.EndTime.ToString()}");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Repository Error");
-            }
-            
+
+            return true;
         }
     }
 }
