@@ -25,7 +25,7 @@
        
         
         <Button x:Name="btnAnnuller" Content="Annuller"  Margin ="0,0,0,10"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="5" Height="20" Click="btnAnnuller_Click"/>
-        <Button x:Name="btnRegister" Content="Register" Margin ="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"  Grid.Column="3" Grid.Row="5" Click="btnRegister_Click"/>
+        <Button x:Name="btnRegister" Content="Register" Command="{Binding RegisterCommand}" Margin ="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"  Grid.Column="3" Grid.Row="5"/>
         
         <Label x:Name="lblDirector" Content="Instruktør" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="0" Grid.Row="3"/>
         <Label x:Name="lblGenre" Content="Filmgenre" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2"/>
@@ -33,10 +33,10 @@
         <Label x:Name="lblTitle" Content="Titel" Margin ="0,10,0,0" HorizontalAlignment="Center"  VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" />
         <Label x:Name="lblPremiereDate" Content="Premieredato" Margin ="0,10,0,0" HorizontalAlignment="Center"  VerticalAlignment="Top" Grid.Column="0" Grid.Row="4" />
 
-        <TextBox x:Name="txbTitle" TextWrapping="Wrap" Text="Moana"  Margin ="0,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"  Height ="50" Width="100"/>
-        <TextBox x:Name="txbDuration" TextWrapping="Wrap" Text="02.15.0"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1"  Height ="50" Width="100"/>
+        <TextBox x:Name="txbTitle" TextWrapping="Wrap" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"  Margin ="0,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"  Height ="50" Width="100"/>
+        <TextBox x:Name="txbDuration" TextWrapping="Wrap" Text=Text="{Binding Duration, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1"  Height ="50" Width="100"/>
         <TextBox x:Name="txbDirector" TextWrapping="Wrap" Text="John Nolan" HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Column="1" Grid.Row="3"  Height ="50" Width="100"/>
-        <ListBox x:Name="listboxGenre" Grid.Column="1" Margin ="0,0,10,10" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <ListBox x:Name="listboxGenre" Grid.Column="1" Margin="0,0,10,10" Grid.Row="2" ItemsSource="{Binding Genres}" SelectedItem="{Binding SelectedGenre}"/>
 
         <DatePicker SelectedDateFormat="Long" SelectedDate="08/24/26"
              DisplayDateStart="1/01/26" DisplayDateEnd="12/31/26" 
