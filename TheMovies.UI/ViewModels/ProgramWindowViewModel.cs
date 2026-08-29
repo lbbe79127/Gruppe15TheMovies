@@ -110,7 +110,7 @@ namespace TheMovies.UI.ViewModels
         public void RegisterShowing() // Checks and informs user if datainput is correct then informs user if data has been saved
         {
             Showing newShowing = new Showing(0,0,0,DateTime.Now,DateTime.Now);
-            if(ValidateSelectedScreen() && ValidateSelectedDateAndTime())
+            if(isValidateSelectedScreen() && isValidateSelectedDateAndTime())
             {
                 try
                 {
@@ -143,12 +143,12 @@ namespace TheMovies.UI.ViewModels
             }
         }
 
-        private bool ValidateSelectedDateAndTime()
+        private bool isValidateSelectedDateAndTime()
         {
             try
             {
                 DateTime selectedDate = DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"));
-                if(selectedDate <= DateTime.Today)
+                if(selectedDate <= DateTime.Now)
                 {
                     MessageBox.Show("The date cannot be in the past");
                     return false;
@@ -162,7 +162,7 @@ namespace TheMovies.UI.ViewModels
             }
         }
 
-        private bool ValidateSelectedScreen()
+        private bool isValidateSelectedScreen()
         {
             if (Int32.TryParse(SelectedScreen, out int selectedScreen))
             {
