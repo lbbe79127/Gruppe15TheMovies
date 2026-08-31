@@ -110,31 +110,76 @@ namespace TheMovies.UI.ViewModels
         public void RegisterShowing() // Checks and informs user if datainput is correct then informs user if data has been saved
         {
             Showing newShowing = new Showing(0,0,0,DateTime.Now,DateTime.Now);
+            if(isValidateSelectedScreen() && isValidateSelectedDateAndTime())
+            {
+                try
+                {
+                    newShowing = new Showing(
+                        SelectedMovie.MovieID,
+                        Int32.Parse(SelectedScreen), //Mangler exception handling - tjek at skærm er i den valgte biograf
+                                                     //Date is future or same of Datetime.Now
+                                                     //If HH:mm format is wrongly typed, show message "Time should be HH:mm format"
+
+                        DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK")),
+                        DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"))
+                        .AddMinutes(SelectedMovie.Duration + 30)
+                        );
+
+                    try
+                    {
+                        _showingRepository.Add(newShowing);
+                        MessageBox.Show($"Registreret:\nFilm: {_movieRepository.GetByID(newShowing.MovieID).Title}\nSal: {newShowing.ScreenNumber}\nStarttid: {newShowing.StartTime.ToString()}\nSluttid: {newShowing.EndTime.ToString()}");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Repository Error");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Data Error");
+                }
+            }
+        }
+
+        private bool isValidateSelectedDateAndTime()
+        {
             try
             {
-                newShowing = new Showing(
-                    SelectedMovie.MovieID,
-                    Int32.Parse(SelectedScreen), //Mangler exception handling - tjek at skærm er i den valgte biograf
-                    DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK")),
-                    DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"))
-                    .AddMinutes(SelectedMovie.Duration + 30)
-                    );
+                DateTime selectedDate = DateTime.ParseExact(SelectedDate + " " + SelectedStartTime, "dd/MM/yyyy HH:mm", new CultureInfo("da-DK"));
+                if(selectedDate <= DateTime.Now)
+                {
+                    MessageBox.Show("The date cannot be in the past");
+                    return false;
+                }
+                return true;
             }
-            catch (Exception ex)
+            catch(Exception e)
             {
-                MessageBox.Show("Data Error");
+                MessageBox.Show("Type the right format for date & time");
+                return false;
             }
-            
-            try
+        }
+
+        private bool isValidateSelectedScreen()
+        {
+            if (Int32.TryParse(SelectedScreen, out int selectedScreen))
             {
-                _showingRepository.Add(newShowing);
-                MessageBox.Show($"Registreret:\nFilm: {_movieRepository.GetByID(newShowing.MovieID).Title}\nSal: {newShowing.ScreenNumber}\nStarttid: {newShowing.StartTime.ToString()}\nSluttid: {newShowing.EndTime.ToString()}");
+                // how can admin know how many screens a cinema has ? --> list?
+                if (!_screens.Any((x => x.CinemaID == SelectedCinema.CinemaID && x.Number == selectedScreen))) 
+                {
+                    MessageBox.Show("Selected screen number does not exist");
+                    return false;
+                }
             }
-            catch (Exception ex)
+            else // selected screen not a number
             {
-                MessageBox.Show("Repository Error");
+                MessageBox.Show("Selected screen should be a number");
+                return false;
             }
-            
+
+            return true;
         }
     }
 }
