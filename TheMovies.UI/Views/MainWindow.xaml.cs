@@ -9,6 +9,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TheMovies.Core.Models;
+using TheMovies.Core.Repositories;
 
 namespace TheMovies.UI.Views
 {
@@ -20,6 +22,25 @@ namespace TheMovies.UI.Views
         public MainWindow()
         {
             InitializeComponent();
+            CheckExistingCinemas();
+        }
+
+        private static void CheckExistingCinemas()
+        {
+            ICinemaRepository repository = new FileCinemaRepository();
+            IEnumerable<Cinema> allCinemas = repository.GetAll();
+            if (allCinemas.Count() == 0)
+            {
+                AddDefaultCinemaData(repository);
+            }
+        }
+
+        private static void AddDefaultCinemaData(ICinemaRepository repository)
+        {
+            repository.Add(new Cinema(1, "Hjerm"));
+            repository.Add(new Cinema(2, "Videbæk"));
+            repository.Add(new Cinema(3, "Thorsminde"));
+            repository.Add(new Cinema(4, "Ræhr")); 
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
