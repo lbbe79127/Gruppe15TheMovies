@@ -8,7 +8,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows;
 using TheMovies.Core.Repositories;
 using TheMovies.UI.ViewModels;
 
