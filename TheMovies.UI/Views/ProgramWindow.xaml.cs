@@ -24,8 +24,7 @@ namespace TheMovies.UI.Views
             InitializeComponent();
             IShowingRepository showingRepository = new FileShowingRepository();
             IMovieRepository movieRepository = new FileMovieRepository();
-            //IScreenRepository screenRepository = new FileScreenRepository(); 
-            IScreenRepository screenRepository = new InMemoryScreenRepository(); // to validate with screenList from inMemory
+            IScreenRepository screenRepository = new FileScreenRepository();
             ICinemaRepository cinemaRepository = new FileCinemaRepository();
 
             DataContext = new ProgramWindowViewModel(showingRepository, movieRepository, screenRepository, cinemaRepository);
