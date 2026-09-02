@@ -20,6 +20,18 @@ namespace TheMovies.Core.Repositories
             {
                 File.Create(_filepath).Close();
             }
+
+            int maxID = 0;
+
+            foreach (Movie movie in GetAll())
+            {
+                if (movie.MovieID > maxID)
+                {
+                    maxID = movie.MovieID;
+                }
+            }
+
+            Movie.UpdateID(maxID + 1);
         }
 
 
@@ -66,20 +78,6 @@ namespace TheMovies.Core.Repositories
 
         public void Add(Movie movie)
         {
-            List<Movie> allMovies = GetAll().ToList();
-
-            int maxID = 0;
-
-            foreach (Movie existingMovie in allMovies)
-            {
-                if (existingMovie.MovieID > maxID)
-                {
-                    maxID = existingMovie.MovieID;
-                }
-            }
-
-            movie.MovieID = maxID + 1;
-
             try
             {
                 StreamWriter writer = File.AppendText(_filepath);

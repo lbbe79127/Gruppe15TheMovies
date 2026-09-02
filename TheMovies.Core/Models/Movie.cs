@@ -7,6 +7,8 @@ namespace TheMovies.Core.Models
 {
     public class Movie
     {
+        private static int _nextId = 1;
+
         public int MovieID { get; set; }
         public string Title { get; set; }
         public int Duration { get; set; }
@@ -14,12 +16,19 @@ namespace TheMovies.Core.Models
         public string Instructor { get; set; }
         public DateTime PremiereDate { get; set; }
 
+
+        // bruges af repo ved opstart
+        public static void UpdateID(int nextId)
+        {
+            _nextId = nextId;
+        }
+
         public Movie()
         {
 
         }
 
-        //Constructor
+        //Constructor. Bruges når film læses fra fil
         public Movie(int movieID, string title, int duration, string genre, string instructor, DateTime premiereDate)
         {
             MovieID = movieID;
@@ -30,8 +39,11 @@ namespace TheMovies.Core.Models
             PremiereDate = premiereDate;
         }
 
+
+        //Constructor. Bruges når ny film oprettes
         public Movie(string title, int duration, string genre, string instructor, DateTime premiereDate)
         {
+            MovieID = _nextId++;
             Title = title;
             Duration = duration;
             Genre = genre;
