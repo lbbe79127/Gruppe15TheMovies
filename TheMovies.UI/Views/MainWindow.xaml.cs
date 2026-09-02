@@ -23,12 +23,22 @@ namespace TheMovies.UI.Views
         {
             InitializeComponent();
             CheckExistingCinemas();
+            CheckExistingScreens();
+        }
 
+        private static void CheckExistingScreens()
+        {
             IScreenRepository screenRepository = new FileScreenRepository();
             IEnumerable<Screen> allScreens = screenRepository.GetAll();
             if (!allScreens.Any())
             {
-            screenRepository.Add(new Screen(1,1,80,1));
+                AddDefaultScreenData(screenRepository); //Alt + Shift
+            }
+        }
+
+        private static void AddDefaultScreenData(IScreenRepository screenRepository)
+        {
+            screenRepository.Add(new Screen(1, 1, 80, 1));
             screenRepository.Add(new Screen(2, 2, 80, 1));
             screenRepository.Add(new Screen(3, 3, 60, 1));
             screenRepository.Add(new Screen(4, 4, 80, 1));
@@ -36,8 +46,7 @@ namespace TheMovies.UI.Views
             screenRepository.Add(new Screen(6, 2, 40, 2));
             screenRepository.Add(new Screen(7, 1, 80, 3));
             screenRepository.Add(new Screen(8, 2, 30, 3));
-            screenRepository.Add(new Screen(9, 1, 70, 4)); //Alt + Shift
-            }
+            screenRepository.Add(new Screen(9, 1, 70, 4));
         }
 
         private static void CheckExistingCinemas()
