@@ -11,7 +11,6 @@ class FilmRegisterWindowViewModel : ViewModelBase
 {
 private readonly IMovieRepository _movieRepository;
 
-```
     private string _title;
     public string Title
     {
@@ -142,6 +141,5 @@ private readonly IMovieRepository _movieRepository;
         }
     }
 }
-```
 
 }
