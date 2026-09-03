@@ -30,10 +30,10 @@ namespace TheMovies.UI.Views
             DataContext = new ProgramWindowViewModel(showingRepository, movieRepository, screenRepository, cinemaRepository);
         }
 
-        private void btnNext_Click(object sender, RoutedEventArgs e)
+       /* private void btnNext_Click(object sender, RoutedEventArgs e)
         {
             DayProgramWindow dayProgramWindow = new DayProgramWindow();
             dayProgramWindow.ShowDialog();
-        }
+        }*/
     }
 }
