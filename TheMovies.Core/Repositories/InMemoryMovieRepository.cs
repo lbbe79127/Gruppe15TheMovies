@@ -10,8 +10,8 @@ namespace TheMovies.Core.Repositories
         // Test movies
         List<Movie> movieList = new List<Movie>()
         {
-            new Movie() { MovieID = 0, Title = "De uskyldige", Duration = 117, Instructor = "Eskil Vogt", Genre = "Thriller", PremiereDate = DateTime.Now },
-            new Movie() { MovieID = 1, Title = "Druk", Duration = 117, Instructor = "Thomas Vinterberg", Genre = "Comedy", PremiereDate = DateTime.Now }
+            new Movie() { MovieID = 0, Title = "De uskyldige", Duration = 117, Director = "Eskil Vogt", Genre = "Thriller", PremiereDate = DateTime.Now },
+            new Movie() { MovieID = 1, Title = "Druk", Duration = 117, Director = "Thomas Vinterberg", Genre = "Comedy", PremiereDate = DateTime.Now }
 
         };
 
